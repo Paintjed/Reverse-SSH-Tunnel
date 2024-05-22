@@ -5,7 +5,15 @@ if [ -z "$SUDO_USER" ]; then
   exit 1
 fi
 
-echo "Creating file in $STARTUP_SERVICE_LOCATION for auto start"
+STARTUP_SERVICE="autossh-tunnel.service"
+STARTUP_SERVICE_LOCATION="/etc/systemd/system/$STARTUP_SERVICE"
+
+# Check if the service file exists
+if [ -f "$STARTUP_SERVICE_LOCATION" ]; then
+  echo "Service $STARTUP_SERVICE exists. It appears there is a duplicate service. Please remove it manually and then restart the script."
+  exit 0
+fi
+
 echo "Installing openssh-server ,autossh and sshpass"
 apt-get install openssh-server autossh sshpass
 
@@ -21,8 +29,6 @@ else
   exit 1
 fi
 
-STARTUP_SERVICE="autossh-tunnel.service"
-STARTUP_SERVICE_LOCATION="/etc/systemd/system/$STARTUP_SERVICE"
 RSA_KEY_NAME="autossh"
 RSA_KEY_LOCATION="$HOME/.ssh"
 
