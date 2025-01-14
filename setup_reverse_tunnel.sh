@@ -78,6 +78,12 @@ echo "remote_script execution successfully."
 # autossh -f -o "ServerAliveInterval 20" -o "ServerAliveCountMax 3" -NR $PORT_NUMBER:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME $DEVICE_NAME@$SERVER_IP
 # ps x | grep ssh
 
+# Add error check script for restarting the service.
+CHECK_ERROR_SCRIPT_LOC="/opt/autossh/error-check-script.sh"
+sudo mkdir -p /opt/autossh
+sudo mv error-check-script.sh $CHECK_ERROR_SCRIPT_LOC
+sudo chmod +x $CHECK_ERROR_SCRIPT_LOC
+
 tee $STARTUP_SERVICE_LOCATION <<EOF
 [Unit]
 Description=AutoSSH tunnel service
@@ -85,7 +91,7 @@ After=network.target
 
 [Service]
 Environment="AUTOSSH_GATETIME=0"
-ExecStart=/usr/bin/autossh -o "ServerAliveInterval 60" -o "ServerAliveCountMax 5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP}
+ExecStart=/bin/bash -c '/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP} 2>&1 | $CHECK_ERROR_SCRIPT_LOC'
 
 [Install]
 WantedBy=multi-user.target
