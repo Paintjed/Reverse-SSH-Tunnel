@@ -7,6 +7,7 @@ fi
 
 STARTUP_SERVICE="autossh-tunnel.service"
 STARTUP_SERVICE_LOCATION="/etc/systemd/system/$STARTUP_SERVICE"
+CHECK_ERROR_SCRIPT_FILE="error_check_script.sh"
 
 # Check if the service file exists
 if [ -f "$STARTUP_SERVICE_LOCATION" ]; then
@@ -103,4 +104,5 @@ systemctl enable $STARTUP_SERVICE
 systemctl start $STARTUP_SERVICE
 systemctl status $STARTUP_SERVICE
 
-journalctl -u autossh-tunnel.service -f | .check_error_script.sh
+chmod +x $CHECK_ERROR_SCRIPT_FILE
+journalctl -u autossh-tunnel.service -f | ./$CHECK_ERROR_SCRIPT_FILE &
