@@ -92,7 +92,7 @@ After=network.target
 
 [Service]
 Environment="AUTOSSH_GATETIME=0"
-ExecStart=/bin/bash -c '/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP} 2>&1 | $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT'
+ExecStart=/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP} 2>&1 | $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT
 
 [Install]
 WantedBy=multi-user.target
