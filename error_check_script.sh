@@ -1,6 +1,8 @@
 #!/bin/bash
 STARTUP_SERVICE="autossh-tunnel.service"
 
+echo "error_check_script.sh: Script started and is processing input..." >&2
+
 while read -r line; do
     echo "$line" >>/var/log/autossh.log
     if [[ "$line" == *"remote port forwarding failed"* ]]; then
