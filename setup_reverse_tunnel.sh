@@ -79,11 +79,11 @@ echo "remote_script execution successfully."
 # ps x | grep ssh
 
 # Add error check script for restarting the service.
-CHECK_ERROR_SCRIPT="error-check-script.sh"
-CHECK_ERROR_SCRIPT_FORWARD_LOC="/opt/autossh/"
-sudo mkdir -p /opt/autossh
-sudo cp $CHECK_ERROR_SCRIPT $CHECK_ERROR_SCRIPT_FORWARD_LOC
-sudo chmod +x $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT_LOC
+# CHECK_ERROR_SCRIPT="error-check-script.sh"
+# CHECK_ERROR_SCRIPT_FORWARD_LOC="/opt/autossh/"
+# sudo mkdir -p /opt/autossh
+# sudo cp $CHECK_ERROR_SCRIPT $CHECK_ERROR_SCRIPT_FORWARD_LOC
+# sudo chmod +x $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT_LOC
 
 tee $STARTUP_SERVICE_LOCATION <<EOF
 [Unit]
@@ -92,7 +92,7 @@ After=network.target
 
 [Service]
 Environment="AUTOSSH_GATETIME=0"
-ExecStart=/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP} 2>&1 | $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT
+ExecStart=/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP}
 
 [Install]
 WantedBy=multi-user.target
@@ -102,3 +102,5 @@ systemctl daemon-reload
 systemctl enable $STARTUP_SERVICE
 systemctl start $STARTUP_SERVICE
 systemctl status $STARTUP_SERVICE
+
+journalctl -u autossh-tunnel.service -f | .check_error_script.sh
