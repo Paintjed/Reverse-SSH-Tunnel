@@ -82,8 +82,8 @@ echo "remote_script execution successfully."
 CHECK_ERROR_SCRIPT="error-check-script.sh"
 CHECK_ERROR_SCRIPT_FORWARD_LOC="/opt/autossh/"
 sudo mkdir -p /opt/autossh
-sudo cp $CHECK_ERROR_SCRIPT $CHECK_ERROR_SCRIPT_FORWARD_LOC
 sudo chmod +x $CHECK_ERROR_SCRIPT_LOC
+sudo cp $CHECK_ERROR_SCRIPT $CHECK_ERROR_SCRIPT_FORWARD_LOC
 
 tee $STARTUP_SERVICE_LOCATION <<EOF
 [Unit]
