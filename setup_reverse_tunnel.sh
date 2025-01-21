@@ -94,7 +94,7 @@ After=network.target
 [Service]
 Environment="AUTOSSH_GATETIME=0"
 ExecStart=/usr/bin/autossh -M 0 -o "ServerAliveInterval=60" -o "ServerAliveCountMax=5" -NR ${PORT_NUMBER}:localhost:22 -i $RSA_KEY_LOCATION/$RSA_KEY_NAME ${DEVICE_NAME}@${SERVER_IP}
-ExecStartPost=/bin/bash -c 'journalctl -u $STARTUP_SERVICE -f | $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT'
+ExecStartPost=/bin/bash -c 'journalctl -u $STARTUP_SERVICE -f | $CHECK_ERROR_SCRIPT_FORWARD_LOC$CHECK_ERROR_SCRIPT&'
 
 [Install]
 WantedBy=multi-user.target
