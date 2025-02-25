@@ -21,9 +21,10 @@ apt-get install openssh-server autossh sshpass
 read -p "Enter the ip address of server host: " SERVER_IP
 read -p "Enter the user name of server host: " SERVER_USERNAME
 read -s -p "Enter the password of server host: " SERVER_PASSWORD
+export SERVER_PASSWORD 
 
 # 使用 ssh 嘗試連接
-if sshpass -p "$SERVER_PASSWORD" ssh "$SERVER_USERNAME@$SERVER_IP" true; then
+if sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" true; then
   echo "Login successful"
 else
   echo "Login failed"
